@@ -1,0 +1,10 @@
+---
+useTabs: true
+quoteProps: consistent
+proseWrap: always
+plugins:
+  - prettier-plugin-astro
+overrides:
+  - files: "*.astro"
+    options:
+      parser: astro

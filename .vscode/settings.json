@@ -1,0 +1,7 @@
+{
+	"editor.tabSize": 2,
+	"editor.indentSize": "tabSize",
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"files.associations": { "*.mdoc": "markdown" },
+	"eslint.validate": ["javascript", "typescript", "astro"]
+}
