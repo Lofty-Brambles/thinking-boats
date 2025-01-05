@@ -1,0 +1,42 @@
+---
+import { OGP_SITENAME } from "astro:env/client";
+
+import OgpArticleTags, {
+	type Props as OgpArticleTagsProps,
+} from "#/components/OgpArticleTags.astro";
+
+export interface Props {
+	description: string;
+	ogpBase: Record<"title" | "type", string>;
+	ogpImage: Record<"url" | "alt" | "type", string>;
+	ogpArticle?: OgpArticleTagsProps;
+}
+
+const { description, ogpBase, ogpImage, ogpArticle } = Astro.props;
+const baseUrl = Astro.site || Astro.url;
+const canonical = new URL(Astro.url.pathname + Astro.url.search, baseUrl);
+---
+
+<link rel="canonical" href={canonical.href} />
+<link rel="sitemap" href="/sitemap-index.xml" />
+<link
+	rel="alternate"
+	href={`${Astro.url.origin}/rss.xml`}
+	type="application/rss+xml"
+	title={`${OGP_SITENAME} - RSS`}
+/>
+
+<meta name="description" content={description} />
+<meta name="robots" content="index, follow" />
+<meta name="generator" content={Astro.generator} />
+
+<meta name="og:site_name" content={OGP_SITENAME} />
+<meta name="og:title" content={`${OGP_SITENAME} - ${ogpBase.title}`} />
+<meta name="og:type" content={ogpBase.type} />
+<meta name="og:url" content={canonical.href} />
+
+<meta property="og:image" content={ogpImage.url} />
+<meta property="og:image:type" content={ogpImage.type} />
+<meta property="og:image:alt" content={ogpImage.alt} />
+
+{ogpArticle && <OgpArticleTags {...ogpArticle} />}

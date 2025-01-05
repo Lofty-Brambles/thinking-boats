@@ -1,0 +1,41 @@
+---
+export type Props = {
+	publishedTime: Date;
+	modifiedTime?: Date;
+	expirationTime?: Date;
+	authors: string[];
+	tags?: string[];
+	section: string;
+};
+
+const { section, authors, tags, publishedTime, modifiedTime, expirationTime } =
+	Astro.props;
+---
+
+<meta property="article:section" content={section} />
+
+{authors.map((author) => <meta name="article:author" content={author} />)}
+{tags && tags.map((tag) => <meta name="article:tag" content={tag} />)}
+
+<meta
+	property="og:article:published_time"
+	content={publishedTime.toISOString()}
+/>
+
+{
+	modifiedTime && (
+		<meta
+			property="og:article:modified_time"
+			content={modifiedTime.toISOString()}
+		/>
+	)
+}
+
+{
+	expirationTime && (
+		<meta
+			property="og:article:modified_time"
+			content={expirationTime.toISOString()}
+		/>
+	)
+}

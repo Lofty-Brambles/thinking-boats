@@ -1,0 +1,20 @@
+---
+import SEO, { type Props as SEOData } from "#/components/SEO.astro";
+
+type Props = { seo: SEOData };
+
+const { seo } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{seo.ogpBase.title}</title>
+		<SEO {...seo} />
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>

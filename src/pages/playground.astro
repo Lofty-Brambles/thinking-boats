@@ -1,0 +1,13 @@
+---
+import Base from "#/layouts/Base.astro";
+
+const ogpImage = {
+	url: "image.url",
+	alt: "image.alt",
+	type: "image.type",
+};
+
+const ogpBase = { title: "title", type: "website" };
+---
+
+<Base seo={{ description: "desc", ogpBase, ogpImage }}>Testing this.</Base>
