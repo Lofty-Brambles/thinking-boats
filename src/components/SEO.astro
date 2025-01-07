@@ -6,13 +6,12 @@ import OgpArticleTags, {
 } from "#/components/OgpArticleTags.astro";
 
 export interface Props {
-	description: string;
-	ogpBase: Record<"title" | "type", string>;
+	ogpBase: Record<"title" | "type" | "description", string>;
 	ogpImage: Record<"url" | "alt" | "type", string>;
 	ogpArticle?: OgpArticleTagsProps;
 }
 
-const { description, ogpBase, ogpImage, ogpArticle } = Astro.props;
+const { ogpBase, ogpImage, ogpArticle } = Astro.props;
 const baseUrl = Astro.site || Astro.url;
 const canonical = new URL(Astro.url.pathname + Astro.url.search, baseUrl);
 ---
@@ -26,7 +25,7 @@ const canonical = new URL(Astro.url.pathname + Astro.url.search, baseUrl);
 	title={`${OGP_SITENAME} - RSS`}
 />
 
-<meta name="description" content={description} />
+<meta name="description" content={ogpBase.description} />
 <meta name="robots" content="index, follow" />
 <meta name="generator" content={Astro.generator} />
 
