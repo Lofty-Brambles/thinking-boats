@@ -1,7 +1,7 @@
 import astro from "eslint-plugin-astro";
 import ts from "typescript-eslint";
 import js from "@eslint/js";
-import { browser } from "globals";
+import globals from "globals";
 
 const ignores = ["dist/", ".astro/", "node_modules/", "pnpm-lock.yaml"];
 const browserScriptPath = "src/assets/scripts/**";
@@ -15,6 +15,6 @@ export default ts.config(
 	astro.configs["jsx-a11y-strict"],
 	{
 		files: [browserScriptPath],
-		languageOptions: { globals: browser },
+		languageOptions: { globals: globals.browser },
 	},
 );

@@ -1,7 +1,11 @@
 ---
 import SEO, { type Props as SEOData } from "#/components/SEO.astro";
+import ThemeManager from "#/components/ThemeManager.astro";
+import { ClientRouter } from "astro:transitions";
 
-type Props = { seo: SEOData };
+interface Props {
+	seo: SEOData;
+}
 
 const { seo } = Astro.props;
 ---
@@ -12,9 +16,13 @@ const { seo } = Astro.props;
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>{seo.ogpBase.title}</title>
+		<ThemeManager default="dark" />
 		<SEO {...seo} />
+		<ClientRouter />
 	</head>
 	<body>
 		<slot />
 	</body>
 </html>
+
+<style></style>

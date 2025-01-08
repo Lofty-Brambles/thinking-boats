@@ -1,0 +1,41 @@
+---
+//
+---
+
+<script is:inline>
+	window.theme ??= new Themer();
+	window.theme.setTheme(window.theme.getTheme());
+
+	class Themer {
+		THEME_KEY = "theme_key";
+
+		constructor() {
+			const matchResult = window.matchMedia("(prefers-color-scheme: light)");
+			const tabThemes = (isLight) => (isLight ? "light" : "dark");
+			this.systemTheme = tabThemes(matchResult.matches);
+			matchResult.addEventListener("change", (event) => {
+				this.systemTheme = tabThemes(event.matches);
+				this.#applyTheme(this.getTheme());
+			});
+		}
+
+		setTheme(theme) {
+			localStorage.setItem(this.THEME_KEY, theme ?? this.systemTheme);
+			this.#applyTheme(theme);
+		}
+
+		getTheme() {
+			return localStorage.getItem(this.THEME_KEY) || this.systemTheme;
+		}
+
+		#applyTheme(theme) {
+			document.documentElement.dataset["theme"] = theme;
+		}
+	}
+</script>
+
+<script>
+	document.addEventListener("astro:after-swap", () =>
+		window.theme.setTheme(window.theme.getTheme()),
+	);
+</script>
