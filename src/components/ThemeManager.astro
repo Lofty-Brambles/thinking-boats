@@ -3,9 +3,6 @@
 ---
 
 <script is:inline>
-	window.theme ??= new Themer();
-	window.theme.setTheme(window.theme.getTheme());
-
 	class Themer {
 		THEME_KEY = "theme_key";
 
@@ -32,6 +29,9 @@
 			document.documentElement.dataset["theme"] = theme;
 		}
 	}
+
+	window.theme ??= new Themer();
+	window.theme.setTheme(window.theme.getTheme());
 </script>
 
 <script>
