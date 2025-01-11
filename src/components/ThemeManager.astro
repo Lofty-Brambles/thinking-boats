@@ -3,35 +3,25 @@
 ---
 
 <script is:inline>
-	class Themer {
-		THEME_KEY = "theme_key";
-
-		constructor() {
-			const matchResult = window.matchMedia("(prefers-color-scheme: light)");
-			const tabThemes = (isLight) => (isLight ? "light" : "dark");
-			this.systemTheme = tabThemes(matchResult.matches);
-			matchResult.addEventListener("change", (event) => {
-				this.systemTheme = tabThemes(event.matches);
-				this.#applyTheme(this.getTheme());
-			});
-		}
-
-		setTheme(theme) {
-			localStorage.setItem(this.THEME_KEY, theme ?? this.systemTheme);
-			this.#applyTheme(theme);
-		}
-
-		getTheme() {
-			return localStorage.getItem(this.THEME_KEY) || this.systemTheme;
-		}
-
-		#applyTheme(theme) {
-			document.documentElement.dataset["theme"] = theme;
-		}
-	}
-
-	window.theme ??= new Themer();
+	window.theme ??= themer();
 	window.theme.setTheme(window.theme.getTheme());
+
+	function themer() {
+		const matchResult = window.matchMedia("(prefers-color-scheme: light)");
+		const tabThemes = (isLight) => (isLight ? "light" : "dark");
+		this.systemTheme = tabThemes(matchResult.matches);
+		matchResult.addEventListener("change", (event) => {
+			this.systemTheme = tabThemes(event.matches);
+		});
+
+		return {
+			getTheme: () => localStorage.getItem("theme_key") || this.systemTheme,
+			setTheme: (theme) => {
+				localStorage.setItem("theme_key", theme ?? this.systemTheme);
+				document.documentElement.dataset["theme"] = theme;
+			},
+		};
+	}
 </script>
 
 <script>
