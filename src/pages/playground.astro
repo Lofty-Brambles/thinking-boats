@@ -1,8 +1,19 @@
 ---
 import Base from "#/layouts/Base.astro";
+import HeaderNav from "#/components/HeaderNav.svelte";
+import Burger from "#/assets/icons/hamburger.svg";
 
 const ogpImage = { url: "image.url", alt: "image.alt", type: "image.type" };
 const ogpBase = { title: "title", type: "website", description: "desc" };
 ---
 
-<Base seo={{ ogpBase, ogpImage }}>Testing this.</Base>
+<Base seo={{ ogpBase, ogpImage }}
+	><HeaderNav client:visible><Burger /></HeaderNav>
+	Testing this.
+</Base>
+
+<style>
+  body {
+    height: 200dvh;
+  }
+</style>
