@@ -11,6 +11,13 @@ export default ts.config(
 	js.configs.recommended,
 	ts.configs.strict,
 	ts.configs.stylistic,
+	{
+		rules: {
+			"@typescript-eslint/consistent-type-imports": {
+				fixStyle: "inline-type-imports",
+			},
+		},
+	},
 	astro.configs["recommended"],
 	astro.configs["jsx-a11y-strict"],
 	{

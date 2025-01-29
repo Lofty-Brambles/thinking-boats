@@ -6,13 +6,13 @@
 
 	type Item = { name: string; path: string };
 	const navigationList: Item[] = [
-		{ name: "Home", path: "/" },
+		{ name: "Home", path: "/playground" },
 		{ name: "Tech", path: "/tech" },
 	];
 
 	const isActive = (item: Item) => activeURLPath === item.path;
 
-	let burger = $state(false);
+	let burger = $state(true);
 	let toggleBurger = () => {
 		burger = !burger;
 	};
@@ -58,84 +58,83 @@
 
 <style>
 	header {
+		z-index: var(--z-header);
 		position: sticky;
-	}
-</style>
-
-<!-- <style>
-	:root {
-		--border-black: #1d1d1b80;
-		--button-svg-stroke: #1d1d1b;
-		--prose-extent: 80ch;
-		--z-topmost: 3;
-		--font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.19rem);
-		--icon-button-dimensions: 40px;
-		--font-size-lg: clamp(1.12rem, 0.5vw + 1rem, 1.3rem);
-		--line-height-lg: 1.75rem;
-		--font-wt-bold: 700;
-	}
-
-	header {
-		position: sticky;
-		z-index: var(--z-topmost);
 		top: 0;
 
-		background-image: url(./paper-pattern.jpg);
-		border-bottom: 1px solid var(--border-black);
+		max-width: 56rem;
+		padding: 18px 24px;
+		margin: 0 auto;
 	}
 
 	nav,
 	ul {
 		display: flex;
 		align-items: center;
-		gap: 1.5rem;
+		gap: 24px;
 	}
 
 	nav {
-		width: 100%;
-		max-width: var(--prose-extent);
-		margin: 0 auto;
-		padding: 0.75rem;
+		position: relative;
+		padding: 6px 16px;
+		border: 1px solid #1d1d1b;
 
-		font: var(--font-size-base);
+		&:after {
+			content: "";
+			height: 100%;
+			width: 100%;
+			z-index: -1;
+
+			position: absolute;
+			top: 7px;
+			left: 7px;
+
+			background-color: oklch(100% 0 0 / 33%);
+			box-shadow: 0 4px 30px oklch(0% 0 0 / 10%);
+			backdrop-filter: blur(8.2px);
+		}
 	}
 
 	button {
+		border: none;
+		background-color: inherit;
+
 		:global(path) {
-			stroke: var(--button-svg-stroke);
+			stroke: #1d1d1b;
 			stroke-linecap: round;
-			stroke-width: 10;
+			stroke-width: 6;
 			fill: none;
 
-			--burger-bezier: cubic-bezier(0.4, 0, 0.2, 1);
 			transition:
-				stroke-dasharray 0.6s var(--burger-bezier),
-				stroke-dashoffset 0.6s var(--burger-bezier);
+				stroke-dasharray 0.2s ease-in,
+				stroke-dashoffset 0.2s ease-in;
 
-			&:nth-child(1),
-			&:nth-child(3) {
-				stroke-dasharray: 60 207;
+			&:nth-child(1) {
+				stroke-dasharray: 40 130;
 			}
-
 			&:nth-child(2) {
-				stroke-dasharray: 60 60;
+				stroke-dasharray: 40 140;
+			}
+			&:nth-child(3) {
+				stroke-dasharray: 40 205;
 			}
 		}
 
 		:global(svg) {
-			width: var(--icon-button-dimensions);
+			transition: transform 400ms;
 		}
 
 		&[aria-expanded="true"] :global(path) {
-			&:nth-child(1),
-			&:nth-child(3) {
-				stroke-dasharray: 90 207;
-				stroke-dashoffset: -134;
+			&:nth-child(1) {
+				stroke-dasharray: 75 130;
+				stroke-dashoffset: -63px;
 			}
-
 			&:nth-child(2) {
-				stroke-dasharray: 1 60;
-				stroke-dashoffset: -30;
+				stroke-dashoffset: -102px;
+			}
+			&:nth-child(3) {
+				stroke-dasharray: 110 205;
+				stroke-dashoffset: -86px;
 			}
 		}
 	}
@@ -145,7 +144,7 @@
 			transform ease-out 500ms,
 			visibility ease-out 500ms,
 			opacity ease-out 500ms;
-		font: var(--font-size-lg) / var(--line-height-lg);
+		font: var(--fonts-lg) var(--fonts-header);
 
 		transition-delay: calc(var(--count) * 50ms);
 		transform: translateX(calc(var(--count) * -2em));
@@ -162,13 +161,22 @@
 
 	a {
 		display: block;
-
 		text-decoration-line: none;
+		color: var(--color-main);
+
+		background: no-repeat 100% 100%/ 0% 0.1em
+			linear-gradient(var(--color-main), var(--color-focus));
+		transition: background-size 0.2s ease-in-out;
+
+		&:focus,
+		&:hover {
+			background-size: 100% 0.1em;
+			background-position-x: 0%;
+		}
 
 		&[data-active] {
-			/* color: ; */
-			font-weight: var(--font-wt-bold);
-			transform: scale(1.05);
+			color: var(--color-focus);
+			font-weight: 700;
 		}
 	}
-</style> -->
+</style>
