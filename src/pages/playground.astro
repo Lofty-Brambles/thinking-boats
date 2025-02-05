@@ -9,11 +9,14 @@ const ogpBase = { title: "title", type: "website", description: "desc" };
 
 <Base seo={{ ogpBase, ogpImage }}
 	><HeaderNav client:visible><Burger /></HeaderNav>
-	Testing this.
+	<main>
+		<section>Let ideas cruise.</section>
+		Testing this.
+	</main>
 </Base>
 
 <style>
-  body {
-    height: 200dvh;
-  }
+	:global(body) {
+		height: 200dvh; /* remove this, finally */
+	}
 </style>

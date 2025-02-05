@@ -6,8 +6,8 @@
 
 	type Item = { name: string; path: string };
 	const navigationList: Item[] = [
-		{ name: "Home", path: "/playground" },
-		{ name: "Tech", path: "/tech" },
+		{ name: "/home", path: "/playground" },
+		{ name: "/tech", path: "/tech" },
 	];
 
 	const isActive = (item: Item) => activeURLPath === item.path;
