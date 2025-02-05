@@ -83,11 +83,11 @@
 			content: "";
 			height: 100%;
 			width: 100%;
-			z-index: -1;
+			z-index: -2;
 
 			position: absolute;
-			top: 7px;
-			left: 7px;
+			top: 5px;
+			left: 5px;
 
 			background-color: oklch(100% 0 0 / 33%);
 			box-shadow: 0 4px 30px oklch(0% 0 0 / 10%);
@@ -96,8 +96,27 @@
 	}
 
 	button {
+		position: relative;
 		border: none;
 		background-color: inherit;
+
+		&:after {
+			content: "";
+			height: 0px;
+			width: 0px;
+			z-index: -1;
+
+			position: absolute;
+			top: 50%;
+			left: 50%;
+
+			transform: translate(-50%, -50%);
+			border-radius: 25%;
+			background-color: var(--color-divider);
+			transition:
+				width 200ms,
+				height 200ms;
+		}
 
 		:global(path) {
 			stroke: #1d1d1b;
@@ -106,8 +125,8 @@
 			fill: none;
 
 			transition:
-				stroke-dasharray 0.2s ease-in,
-				stroke-dashoffset 0.2s ease-in;
+				stroke-dasharray 200ms ease-in,
+				stroke-dashoffset 200ms ease-in;
 
 			&:nth-child(1) {
 				stroke-dasharray: 40 130;
@@ -124,17 +143,24 @@
 			transition: transform 400ms;
 		}
 
-		&[aria-expanded="true"] :global(path) {
-			&:nth-child(1) {
-				stroke-dasharray: 75 130;
-				stroke-dashoffset: -63px;
+		&[aria-expanded="true"] {
+			&:after {
+				height: 40px;
+				width: 40px;
 			}
-			&:nth-child(2) {
-				stroke-dashoffset: -102px;
-			}
-			&:nth-child(3) {
-				stroke-dasharray: 110 205;
-				stroke-dashoffset: -86px;
+
+			:global(path) {
+				&:nth-child(1) {
+					stroke-dasharray: 75 130;
+					stroke-dashoffset: -63px;
+				}
+				&:nth-child(2) {
+					stroke-dashoffset: -102px;
+				}
+				&:nth-child(3) {
+					stroke-dasharray: 110 205;
+					stroke-dashoffset: -86px;
+				}
 			}
 		}
 	}
@@ -166,12 +192,13 @@
 
 		background: no-repeat 100% 100%/ 0% 0.1em
 			linear-gradient(var(--color-main), var(--color-focus));
-		transition: background-size 0.2s ease-in-out;
+		transition: background-size 200ms ease-in-out;
 
 		&:focus,
 		&:hover {
 			background-size: 100% 0.1em;
 			background-position-x: 0%;
+			outline: none;
 		}
 
 		&[data-active] {
