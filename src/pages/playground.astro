@@ -1,14 +1,23 @@
 ---
 import Base from "#/layouts/Base.astro";
 import HeaderNav from "#/components/HeaderNav.svelte";
+
 import Burger from "#/assets/icons/hamburger.svg";
+import RSS from "#/assets/icons/rss.svg";
+import Search from "#/assets/icons/search.svg";
+import Themer from "#/assets/icons/theme_switcher.svg";
 
 const ogpImage = { url: "image.url", alt: "image.alt", type: "image.type" };
 const ogpBase = { title: "title", type: "website", description: "desc" };
 ---
 
 <Base seo={{ ogpBase, ogpImage }}
-	><HeaderNav client:visible><Burger /></HeaderNav>
+	><HeaderNav activeURLPath="" client:visible>
+		<Burger slot="hamburger" />
+		<RSS slot="rss" />
+		<Search slot="search" />
+		<Themer slot="themer" />
+	</HeaderNav>
 	<main>
 		<section>Let ideas cruise.</section>
 		Testing this.

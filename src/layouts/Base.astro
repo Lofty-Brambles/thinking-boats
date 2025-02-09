@@ -37,10 +37,10 @@ const { seo } = Astro.props;
 		--fonts-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
 			"Liberation Mono", "Courier New", monospace;
 
-		--fonts-sm: clamp(0.8rem, 0.13cqi + 0.77rem, 0.89rem);
-		--fonts-md: clamp(1rem, 0.28cqi + 0.94rem, 1.19rem);
-		--fonts-lg: clamp(1.25rem, 0.49cqi + 1.15rem, 1.58rem);
-		--fonts-xl: clamp(1.56rem, 0.81cqi + 1.4rem, 2.11rem);
+		--fonts-sm: clamp(0.89rem, 0cqi + 0.89rem, 0.89rem);
+		--fonts-md: clamp(1rem, 0.31cqi + 0.94rem, 1.19rem);
+		--fonts-lg: clamp(1.13rem, 0.76cqi + 0.97rem, 1.58rem);
+		--fonts-xl: clamp(1.27rem, 1.41cqi + 0.98rem, 2.11rem);
 		--line-height-compressed: 1.2;
 		--line-height-md: 1.5;
 		--line-height-heading: 1.15;
@@ -96,6 +96,12 @@ const { seo } = Astro.props;
 		color: var(--color-text);
 	}
 
+	path {
+		stroke: currentColor;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+
 	/* Reset styles. */
 
 	* {
@@ -118,7 +124,7 @@ const { seo } = Astro.props;
 		text-wrap: pretty;
 	}
 
-	:where(ul[role="list"], ol[role="list"]) {
+	:where(ul[role="list"], ol) {
 		list-style: none;
 		padding: 0;
 	}

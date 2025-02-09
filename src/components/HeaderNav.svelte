@@ -1,8 +1,9 @@
 <script lang="ts">
-	import type { Snippet } from "svelte";
+	import { onMount, type Snippet } from "svelte";
 
-	type Props = { activeURLPath: string; children: Snippet };
-	const { activeURLPath, children }: Props = $props();
+	type SVGs = "hamburger" | "rss" | "search" | "themer";
+	type Props = { activeURLPath: string } & Record<SVGs, Snippet>;
+	const { activeURLPath, hamburger, rss, search, themer }: Props = $props();
 
 	type Item = { name: string; path: string };
 	const navigationList: Item[] = [
@@ -10,8 +11,15 @@
 		{ name: "/tech", path: "/tech" },
 	];
 
+	const iconList = [
+		{ name: "/rss.xml", snippet: rss },
+		{ name: "Search content", snippet: search },
+		{ name: "Change Theme", snippet: themer },
+	];
+
 	const isActive = (item: Item) => activeURLPath === item.path;
 
+	let autoToggle = $state(true);
 	let burger = $state(true);
 	let toggleBurger = () => {
 		burger = !burger;
@@ -19,11 +27,21 @@
 
 	let ticking: number | boolean = false;
 	const listener = () => {
+		if (!autoToggle) return;
 		ticking ||= requestAnimationFrame(() => {
 			burger = window.scrollY === 0;
 			ticking = false;
 		});
 	};
+
+	onMount(() => {
+		const sizer = window.matchMedia("(min-width: 768px)");
+		burger = sizer.matches;
+		autoToggle = sizer.matches;
+		sizer.addEventListener("change", (e) => {
+			autoToggle = e.matches;
+		});
+	});
 </script>
 
 <svelte:document onscroll={listener} />
@@ -36,25 +54,34 @@
 			aria-label="Link navigation list"
 			aria-controls="link-navigation"
 			aria-expanded={burger}
-			onclick={toggleBurger}>{@render children()}</button
+			onclick={toggleBurger}>{@render hamburger()}</button
 		>
-		<ul
-			role="list"
-			id="link-navigation"
-			style:--total-count={navigationList.length}
-		>
+		<ol id="link-navigation" style:--total-count={navigationList.length}>
 			{#each navigationList as item, index}
-				{@render NavigationItem(item, index)}
+				<li style:--count={index + 1} data-visible={burger}>
+					<a href={item.path} data-active={isActive(item)}>{item.name}</a>
+				</li>
 			{/each}
-		</ul>
+		</ol>
+		<ol style:--total-count={iconList.length}>
+			{#each iconList as item, index}
+				<li
+					style:--count={index + 1}
+					data-visible={!burger}
+					data-disabled={autoToggle}
+				>
+					{#if item.name.startsWith("/")}
+						<a href={item.name}>{@render item.snippet()}</a>
+					{:else}
+						<button type="button" aria-label={item.name}
+							>{@render item.snippet()}</button
+						>
+					{/if}
+				</li>
+			{/each}
+		</ol>
 	</nav>
 </header>
-
-{#snippet NavigationItem(item: Item, index: number)}
-	<li style:--count={index + 1} data-visible={burger}>
-		<a href={item.path} data-active={isActive(item)}>{item.name}</a>
-	</li>
-{/snippet}
 
 <style>
 	header {
@@ -68,10 +95,11 @@
 	}
 
 	nav,
-	ul {
+	ol {
 		display: flex;
 		align-items: center;
 		gap: 24px;
+		--slide-coefficient: -2em;
 	}
 
 	nav {
@@ -95,7 +123,7 @@
 		}
 	}
 
-	button {
+	[aria-controls="link-navigation"] {
 		position: relative;
 		border: none;
 		background-color: inherit;
@@ -119,11 +147,8 @@
 		}
 
 		:global(path) {
-			stroke: #1d1d1b;
-			stroke-linecap: round;
-			stroke-width: 6;
 			fill: none;
-
+			stroke-width: 6;
 			transition:
 				stroke-dasharray 200ms ease-in,
 				stroke-dashoffset 200ms ease-in;
@@ -165,22 +190,19 @@
 		}
 	}
 
-	li {
+	li:not([data-disabled="true"]) {
 		transition:
 			transform ease-out 500ms,
-			visibility ease-out 500ms,
 			opacity ease-out 500ms;
 		font: var(--fonts-lg) var(--fonts-header);
 
 		transition-delay: calc(var(--count) * 50ms);
-		transform: translateX(calc(var(--count) * -2em));
-		visibility: hidden;
+		transform: translateX(calc(var(--count) * var(--slide-coefficient)));
 		opacity: 0;
 
 		&[data-visible="true"] {
 			transition-delay: calc((var(--total-count) - var(--count)) * 50ms);
 			transform: translateX(0);
-			visibility: visible;
 			opacity: 1;
 		}
 	}
@@ -204,6 +226,29 @@
 		&[data-active] {
 			color: var(--color-focus);
 			font-weight: 700;
+		}
+	}
+
+	ol:nth-child(4) {
+		margin: 0 7px 0 auto;
+		gap: 8px;
+		--slide-coefficient: 0.3em;
+
+		:global(li),
+		:global(a),
+		:global(button) {
+			display: grid;
+			place-items: center;
+			width: 40px;
+			height: 40px;
+		}
+
+		:global(a),
+		:global(button) {
+			padding: 0;
+			background: inherit;
+			color: inherit;
+			border: 0;
 		}
 	}
 </style>
